@@ -26,8 +26,14 @@ namespace BudgetTest {
         public void SingleMonth() {
             var start = new DateTime(2021, 6, 1);
             var end   = new DateTime(2021, 6, 30);
-
             TestQuery(start, end, 3000m);
+        }
+        
+        [Test]
+        public void SingleDay() {
+            var start = new DateTime(2021, 6, 1);
+            var end   = new DateTime(2021, 6, 1);
+            TestQuery(start, end, 100m);
         }
 
         private void TestQuery(DateTime start, DateTime end, decimal expected) {
