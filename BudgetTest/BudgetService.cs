@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace BudgetTest {
     public class BudgetService {
@@ -9,8 +10,9 @@ namespace BudgetTest {
             this.repo = repo;
         }
 
-        public object Query(DateTime start, DateTime end) {
-            throw new NotImplementedException();
+        public decimal Query(DateTime start, DateTime end) {
+            var yearMonth = start.ToString("yyyyMM");
+            return repo.ReturnAll().First(b => b.YearMonth == yearMonth).Amount;
         }
 
     }

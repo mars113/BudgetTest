@@ -23,12 +23,16 @@ namespace BudgetTest {
 
 
         [Test]
-        public void SingleDay() {
+        public void SingleMonth() {
             var start = new DateTime(2021, 6, 1);
-            var end   = new DateTime(2021, 6, 1);
+            var end   = new DateTime(2021, 6, 30);
 
+            TestQuery(start, end, 3000m);
+        }
+
+        private void TestQuery(DateTime start, DateTime end, decimal expected) {
             var amount = budgetService.Query(start, end);
-            Assert.AreEqual(300m, amount);
+            Assert.AreEqual(expected, amount);
         }
 
     }
