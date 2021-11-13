@@ -18,16 +18,27 @@ namespace BudgetTest {
         }
 
         private decimal QueryMultiMonths(DateTime start, DateTime end) {
-            return QueryFirstMonth() + QueryLastMonth();
+            return QueryFirstMonth() + QueryMiddleMonths() + QueryLastMonth();
 
             decimal QueryFirstMonth() {
-                var lastDate = new DateTime(
-                    start.Year,
-                    start.Month,
-                    DateTime.DaysInMonth(start.Year, start.Month)
-                );
+                var lastDate = GetLastDate(start);
 
                 return QuerySingleMonth(start, lastDate);
+            }
+
+            decimal QueryMiddleMonths() {
+                var sum = 0m;
+
+                var pointer = new DateTime(start.Year, start.Month, 1).AddMonths(1);
+
+                while (IsDifferentMonths(pointer, end)) {
+                    var lastDate = GetLastDate(pointer);
+                    sum += QuerySingleMonth(pointer, lastDate);
+
+                    pointer = pointer.AddMonths(1);
+                }
+
+                return sum;
             }
 
             decimal QueryLastMonth() {
@@ -36,9 +47,16 @@ namespace BudgetTest {
             }
         }
 
-
         private bool IsDifferentMonths(DateTime start, DateTime end) {
             return start.Year != end.Year || start.Month != end.Month;
+        }
+
+        private DateTime GetLastDate(DateTime start) {
+            return new DateTime(
+                start.Year,
+                start.Month,
+                DateTime.DaysInMonth(start.Year, start.Month)
+            );
         }
 
         private decimal QuerySingleMonth(DateTime start, DateTime end) {

@@ -13,7 +13,13 @@ namespace BudgetTest {
         public void Setup() {
             var budgets = new[] {
                 new Budget("202106", 3000),
-                new Budget("202107", 310)
+                new Budget("202107", 310),
+                new Budget("202108", 690),
+                new Budget("202109", 1000),
+                new Budget("202110", 1000),
+                new Budget("202111", 1000),
+                new Budget("202112", 1000),
+                new Budget("202201", 31)
             };
 
             var repo = Substitute.For<IBudgetRepo>();
@@ -49,6 +55,13 @@ namespace BudgetTest {
             var start = new DateTime(2021, 6, 30);
             var end   = new DateTime(2021, 7, 1);
             TestQuery(start, end, 110m);
+        }
+
+        [Test]
+        public void MultiMonths() {
+            var start = new DateTime(2021, 6, 30);
+            var end   = new DateTime(2022, 1, 1);
+            TestQuery(start, end, 5101m);
         }
 
 
