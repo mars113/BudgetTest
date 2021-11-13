@@ -64,6 +64,13 @@ namespace BudgetTest {
             TestQuery(start, end, 5101m);
         }
 
+        [Test]
+        public void InvalidRange() {
+            var start = new DateTime(2021, 6, 15);
+            var end   = new DateTime(2021, 6, 10);
+            TestQuery(start, end, 0m);
+        }
+
 
         private void TestQuery(DateTime start, DateTime end, decimal expected) {
             var amount = budgetService.Query(start, end);

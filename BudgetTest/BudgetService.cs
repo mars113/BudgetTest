@@ -11,6 +11,9 @@ namespace BudgetTest {
         }
 
         public decimal Query(DateTime start, DateTime end) {
+            if (start > end)
+                return 0m;
+
             if (IsDifferentMonths(start, end))
                 return QueryMultiMonths(start, end);
 
