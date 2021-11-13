@@ -11,6 +11,37 @@ namespace BudgetTest {
         }
 
         public decimal Query(DateTime start, DateTime end) {
+            if (IsDifferentMonths(start, end))
+                return QueryMultiMonths(start, end);
+
+            return QuerySingleMonth(start, end);
+        }
+
+        private decimal QueryMultiMonths(DateTime start, DateTime end) {
+            return QueryFirstMonth() + QueryLastMonth();
+
+            decimal QueryFirstMonth() {
+                var lastDate = new DateTime(
+                    start.Year,
+                    start.Month,
+                    DateTime.DaysInMonth(start.Year, start.Month)
+                );
+
+                return QuerySingleMonth(start, lastDate);
+            }
+
+            decimal QueryLastMonth() {
+                var firstDate = new DateTime(end.Year, end.Month, 1);
+                return QuerySingleMonth(firstDate, end);
+            }
+        }
+
+
+        private bool IsDifferentMonths(DateTime start, DateTime end) {
+            return start.Year != end.Year || start.Month != end.Month;
+        }
+
+        private decimal QuerySingleMonth(DateTime start, DateTime end) {
             var days      = (end - start).Days + 1;
             var totalDays = (decimal)DateTime.DaysInMonth(start.Year, start.Month);
 
