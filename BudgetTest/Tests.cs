@@ -71,6 +71,13 @@ namespace BudgetTest {
             TestQuery(start, end, 0m);
         }
 
+        [Test]
+        public void TinyRange() {
+            var start = new DateTime(2021, 6, 1, 23, 59, 59);
+            var end   = new DateTime(2021, 6, 2, 0,  0,  0);
+            TestQuery(start, end, 200m);
+        }
+
 
         private void TestQuery(DateTime start, DateTime end, decimal expected) {
             var amount = budgetService.Query(start, end);

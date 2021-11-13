@@ -62,7 +62,10 @@ namespace BudgetTest {
             );
         }
 
-        private decimal QuerySingleMonth(DateTime start, DateTime end) {
+        private decimal QuerySingleMonth(DateTime sourceStart, DateTime sourceEnd) {
+            var start = new DateTime(sourceStart.Year, sourceStart.Month, sourceStart.Day);
+            var end   = new DateTime(sourceEnd.Year,   sourceEnd.Month,   sourceEnd.Day);
+
             var days      = (end - start).Days + 1;
             var totalDays = (decimal)DateTime.DaysInMonth(start.Year, start.Month);
 
