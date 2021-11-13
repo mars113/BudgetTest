@@ -72,7 +72,7 @@ namespace BudgetTest {
         }
 
         [Test]
-        public void TinyRange() {
+        public void TinyRangeTest() {
             var start = new DateTime(2021, 6, 1, 23, 59, 59);
             var end   = new DateTime(2021, 6, 2, 0,  0,  0);
             TestQuery(start, end, 200m);

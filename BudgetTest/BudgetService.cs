@@ -6,26 +6,32 @@ namespace BudgetTest {
 
         private readonly IBudgetRepo repo;
 
+
         public BudgetService(IBudgetRepo repo) {
             this.repo = repo;
         }
+
 
         public decimal Query(DateTime start, DateTime end) {
             if (start > end)
                 return 0m;
 
-            if (IsDifferentMonths(start, end))
+            if (AreDifferentMonths(start, end))
                 return QueryMultiMonths(start, end);
 
             return QuerySingleMonth(start, end);
         }
+
+        private bool AreDifferentMonths(DateTime start, DateTime end) {
+            return start.Year != end.Year || start.Month != end.Month;
+        }
+
 
         private decimal QueryMultiMonths(DateTime start, DateTime end) {
             return QueryFirstMonth() + QueryMiddleMonths() + QueryLastMonth();
 
             decimal QueryFirstMonth() {
                 var lastDate = GetLastDate(start);
-
                 return QuerySingleMonth(start, lastDate);
             }
 
@@ -34,7 +40,7 @@ namespace BudgetTest {
 
                 var pointer = new DateTime(start.Year, start.Month, 1).AddMonths(1);
 
-                while (IsDifferentMonths(pointer, end)) {
+                while (AreDifferentMonths(pointer, end)) {
                     var lastDate = GetLastDate(pointer);
                     sum += QuerySingleMonth(pointer, lastDate);
 
@@ -50,10 +56,6 @@ namespace BudgetTest {
             }
         }
 
-        private bool IsDifferentMonths(DateTime start, DateTime end) {
-            return start.Year != end.Year || start.Month != end.Month;
-        }
-
         private DateTime GetLastDate(DateTime start) {
             return new DateTime(
                 start.Year,
@@ -61,6 +63,7 @@ namespace BudgetTest {
                 DateTime.DaysInMonth(start.Year, start.Month)
             );
         }
+
 
         private decimal QuerySingleMonth(DateTime sourceStart, DateTime sourceEnd) {
             var start = new DateTime(sourceStart.Year, sourceStart.Month, sourceStart.Day);
@@ -70,7 +73,7 @@ namespace BudgetTest {
             var totalDays = (decimal)DateTime.DaysInMonth(start.Year, start.Month);
 
             var yearMonth = start.ToString("yyyyMM");
-            var amount    = repo.ReturnAll().FirstOrDefault(b => b.YearMonth == yearMonth)?.Amount ?? 0m;
+            var amount    = repo.ReturnAll().FirstOrDefault(b => b.YearMonth == yearMonth)?.Amount ?? 0;
 
             return amount * days / totalDays;
         }
