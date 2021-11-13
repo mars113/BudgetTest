@@ -15,7 +15,7 @@ namespace BudgetTest {
             var totalDays = (decimal)DateTime.DaysInMonth(start.Year, start.Month);
 
             var yearMonth = start.ToString("yyyyMM");
-            var amount    = repo.ReturnAll().First(b => b.YearMonth == yearMonth).Amount;
+            var amount    = repo.ReturnAll().FirstOrDefault(b => b.YearMonth == yearMonth)?.Amount ?? 0m;
 
             return amount * days / totalDays;
         }
