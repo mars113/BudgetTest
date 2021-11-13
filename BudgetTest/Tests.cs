@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -22,8 +23,12 @@ namespace BudgetTest {
 
 
         [Test]
-        public void Test1() {
-            Assert.True(true);
+        public void SingleDay() {
+            var start = new DateTime(2021, 6, 1);
+            var end   = new DateTime(2021, 6, 1);
+
+            var amount = budgetService.Query(start, end);
+            Assert.AreEqual(300m, amount);
         }
 
     }
